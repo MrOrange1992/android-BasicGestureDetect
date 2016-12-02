@@ -20,7 +20,6 @@ import android.os.Build
 import android.view.GestureDetector
 import android.view.MotionEvent
 import com.example.android.common.logger.Log
-import util.control.Breaks
 
 object GestureListener {
   val TAG: String = "GestureListener"
@@ -33,7 +32,6 @@ object GestureListener {
         touchTypeDescription += "(finger)"
         //ORIGINAL
         //break //todo: break is not supported
-        Breaks.break()
       case MotionEvent.TOOL_TYPE_STYLUS =>
         touchTypeDescription += "(stylus, "
         val stylusPressure: Float = e.getPressure
@@ -43,19 +41,15 @@ object GestureListener {
         }
         touchTypeDescription += ")"
         //break //todo: break is not supported
-        Breaks.break()
       case MotionEvent.TOOL_TYPE_ERASER =>
         touchTypeDescription += "(eraser)"
         //break //todo: break is not supported
-        Breaks.break()
       case MotionEvent.TOOL_TYPE_MOUSE =>
         touchTypeDescription += "(mouse)"
         //break //todo: break is not supported
-        Breaks.break()
       case _ =>
         touchTypeDescription += "(unknown tool)"
         //break //todo: break is not supported
-        Breaks.break()
     }
     return touchTypeDescription
   }

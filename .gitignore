@@ -3,6 +3,8 @@
 *.class
 *.log
 
+local.properties
+
 # sbt specific
 .cache
 .history
