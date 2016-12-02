@@ -21,7 +21,9 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import com.example.android.common.logger.Log
 
-object GestureListener {
+
+class GestureListener extends GestureDetector.SimpleOnGestureListener {
+
   val TAG: String = "GestureListener"
 
   private def getTouchType(e: MotionEvent): String = {
@@ -30,8 +32,8 @@ object GestureListener {
     touchType match {
       case MotionEvent.TOOL_TYPE_FINGER =>
         touchTypeDescription += "(finger)"
-        //ORIGINAL
-        //break //todo: break is not supported
+      //ORIGINAL
+      //break //todo: break is not supported
       case MotionEvent.TOOL_TYPE_STYLUS =>
         touchTypeDescription += "(stylus, "
         val stylusPressure: Float = e.getPressure
@@ -40,16 +42,16 @@ object GestureListener {
           touchTypeDescription += ", buttons pressed: " + getButtonsPressed(e)
         }
         touchTypeDescription += ")"
-        //break //todo: break is not supported
+      //break //todo: break is not supported
       case MotionEvent.TOOL_TYPE_ERASER =>
         touchTypeDescription += "(eraser)"
-        //break //todo: break is not supported
+      //break //todo: break is not supported
       case MotionEvent.TOOL_TYPE_MOUSE =>
         touchTypeDescription += "(mouse)"
-        //break //todo: break is not supported
+      //break //todo: break is not supported
       case _ =>
         touchTypeDescription += "(unknown tool)"
-        //break //todo: break is not supported
+      //break //todo: break is not supported
     }
     return touchTypeDescription
   }
@@ -76,49 +78,47 @@ object GestureListener {
     }
     return buttons
   }
-}
 
-class GestureListener extends GestureDetector.SimpleOnGestureListener {
   override def onSingleTapUp(e: MotionEvent): Boolean = {
-    Log.i(GestureListener.TAG, "Single Tap Up" + GestureListener.getTouchType(e))
+    Log.i(this.TAG, "Single Tap Up" + getTouchType(e))
     return false
   }
 
   override def onLongPress(e: MotionEvent) {
-    Log.i(GestureListener.TAG, "Long Press" + GestureListener.getTouchType(e))
+    Log.i(this.TAG, "Long Press" + getTouchType(e))
   }
 
   override def onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean = {
-    Log.i(GestureListener.TAG, "Scroll" + GestureListener.getTouchType(e1))
+    Log.i(this.TAG, "Scroll" + getTouchType(e1))
     return false
   }
 
   override def onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean = {
-    Log.i(GestureListener.TAG, "Fling" + GestureListener.getTouchType(e1))
+    Log.i(this.TAG, "Fling" + getTouchType(e1))
     return false
   }
 
   override def onShowPress(e: MotionEvent) {
-    Log.i(GestureListener.TAG, "Show Press" + GestureListener.getTouchType(e))
+    Log.i(this.TAG, "Show Press" + getTouchType(e))
   }
 
   override def onDown(e: MotionEvent): Boolean = {
-    Log.i(GestureListener.TAG, "Down" + GestureListener.getTouchType(e))
+    Log.i(this.TAG, "Down" + getTouchType(e))
     return false
   }
 
   override def onDoubleTap(e: MotionEvent): Boolean = {
-    Log.i(GestureListener.TAG, "Double tap" + GestureListener.getTouchType(e))
+    Log.i(this.TAG, "Double tap" + getTouchType(e))
     return false
   }
 
   override def onDoubleTapEvent(e: MotionEvent): Boolean = {
-    Log.i(GestureListener.TAG, "Event within double tap" + GestureListener.getTouchType(e))
+    Log.i(this.TAG, "Event within double tap" + getTouchType(e))
     return false
   }
 
   override def onSingleTapConfirmed(e: MotionEvent): Boolean = {
-    Log.i(GestureListener.TAG, "Single tap confirmed" + GestureListener.getTouchType(e))
+    Log.i(this.TAG, "Single tap confirmed" + getTouchType(e))
     return false
   }
 }
