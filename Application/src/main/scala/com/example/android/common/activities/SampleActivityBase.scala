@@ -17,8 +17,6 @@ package com.example.android.common.activities
 
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
-//import android.app.Fragment
-
 import com.example.android.common.logger.Log
 import com.example.android.common.logger.LogWrapper
 
@@ -26,19 +24,14 @@ object SampleActivityBase {
   val TAG: String = "SampleActivityBase"
 }
 
-//ORIGINAL
-class SampleActivityBase extends FragmentActivity {
-//class SampleActivityBase extends Fragment {
-  override protected def onCreate(savedInstanceState: Bundle) {
-    super.onCreate(savedInstanceState)
-  }
+class SampleActivityBase extends FragmentActivity
+{
+  override protected def onCreate(savedInstanceState: Bundle) = super.onCreate(savedInstanceState)
 
-  override protected def onStart {
-    super.onStart
-    initializeLogging
-  }
+  override protected def onStart { super.onStart ; initializeLogging }
 
-  def initializeLogging {
+  def initializeLogging
+  {
     val logWrapper: LogWrapper = new LogWrapper
     Log.setLogNode(logWrapper)
     Log.i(SampleActivityBase.TAG, "Ready")

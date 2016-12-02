@@ -20,86 +20,56 @@ import android.content.Context
 import android.util._
 import android.widget.TextView
 
-import util.control.Breaks
+class LogView(context: Context, attrs: AttributeSet = null, defStyle: Int = 0)
+  extends TextView(context, attrs, defStyle) with LogNode
+{
 
-class LogView(context: Context
-              , attrs: AttributeSet = null
-              , defStyle: Int = 0) extends TextView(context, attrs, defStyle) with LogNode {
-
-
-  def println(priority: Int, tag: String, msg: String, tr: Throwable) {
+  def println(priority: Int, tag: String, msg: String, tr: Throwable)
+  {
     var priorityStr: String = null
-    priority match {
-      case android.util.Log.VERBOSE =>
-        priorityStr = "VERBOSE"
-        //ORIGINAL
-        //break //todo: break is not supported
-        Breaks.break()
-      case android.util.Log.DEBUG =>
-        priorityStr = "DEBUG"
-        //break //todo: break is not supported
-        Breaks.break()
-      case android.util.Log.INFO =>
-        priorityStr = "INFO"
-        //break //todo: break is not supported
-        Breaks.break()
-      case android.util.Log.WARN =>
-        priorityStr = "WARN"
-        //break //todo: break is not supported
-        Breaks.break()
-      case android.util.Log.ERROR =>
-        priorityStr = "ERROR"
-        //break //todo: break is not supported
-        Breaks.break()
-      case android.util.Log.ASSERT =>
-        priorityStr = "ASSERT"
-        //break //todo: break is not supported
-        Breaks.break()
+    priority match
+    {
+      case android.util.Log.VERBOSE => priorityStr = "VERBOSE"
+      case android.util.Log.DEBUG => priorityStr = "DEBUG"
+      case android.util.Log.INFO => priorityStr = "INFO"
+      case android.util.Log.WARN => priorityStr = "WARN"
+      case android.util.Log.ERROR => priorityStr = "ERROR"
+      case android.util.Log.ASSERT => priorityStr = "ASSERT"
       case _ =>
-        //break //todo: break is not supported
-        Breaks.break()
     }
     var exceptionStr: String = null
-    if (tr != null) {
-      exceptionStr = android.util.Log.getStackTraceString(tr)
-    }
+
+    if (tr != null) exceptionStr = android.util.Log.getStackTraceString(tr)
+
     val outputBuilder: StringBuilder = new StringBuilder
     val delimiter: String = "\t"
     appendIfNotNull(outputBuilder, priorityStr, delimiter)
     appendIfNotNull(outputBuilder, tag, delimiter)
     appendIfNotNull(outputBuilder, msg, delimiter)
     appendIfNotNull(outputBuilder, exceptionStr, delimiter)
-    getContext.asInstanceOf[Activity].runOnUiThread(new Thread(new Runnable() {
-      def run {
-        appendToLog(outputBuilder.toString)
-      }
+    getContext.asInstanceOf[Activity].runOnUiThread(new Thread(new Runnable()
+    {
+      def run(): Unit = appendToLog(outputBuilder.toString)
     }))
-    if (mNext != null) {
-      mNext.println(priority, tag, msg, tr)
+
+    if (mNext != null) mNext.println(priority, tag, msg, tr)
+  }
+
+  def getNext: LogNode = return mNext
+
+  def setNext(node: LogNode) = mNext = node
+
+  private def appendIfNotNull(source: StringBuilder, addStr: String, delimiter: String): StringBuilder =
+  {
+    if (addStr != null)
+    {
+      val d = if (addStr.length == 0) "" else delimiter
+      source.append(addStr).append(d)
     }
-  }
-
-  def getNext: LogNode = {
-    return mNext
-  }
-
-  def setNext(node: LogNode) {
-    mNext = node
-  }
-
-  private def appendIfNotNull(source: StringBuilder, addStr: String, delimiter: String): StringBuilder = {
-    if (addStr != null) {
-      if (addStr.length == 0) {
-        return source.append(addStr).append("")
-      }
-      return source.append(addStr).append(delimiter)
-    }
-    return source
+    else source
   }
 
   private[logger] var mNext: LogNode = null
 
-  def appendToLog(s: String) {
-    append("\n" + s)
-  }
+  def appendToLog(s: String) = append("\n" + s)
 }
