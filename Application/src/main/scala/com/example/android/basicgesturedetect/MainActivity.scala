@@ -20,10 +20,7 @@ import android.os.Bundle
 import android.support.v4.app.FragmentTransaction
 import android.view.Menu
 import com.example.android.common.activities.SampleActivityBase
-import com.example.android.common.logger.MessageOnlyLogFilter
-import com.example.android.common.logger.Log
-import com.example.android.common.logger.LogFragment
-import com.example.android.common.logger.LogWrapper
+import com.example.android.common.logger._
 
 
 object MainActivity {
@@ -36,7 +33,7 @@ class MainActivity extends SampleActivityBase {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
     if (getSupportFragmentManager.findFragmentByTag(MainActivity.FRAGTAG) == null) {
-      val transaction: Nothing = getSupportFragmentManager.beginTransaction
+      val transaction = getSupportFragmentManager.beginTransaction()
       val fragment: BasicGestureDetectFragment = new BasicGestureDetectFragment
       transaction.add(fragment, MainActivity.FRAGTAG)
       transaction.commit
